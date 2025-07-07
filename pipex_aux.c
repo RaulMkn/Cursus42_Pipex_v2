@@ -6,7 +6,7 @@
 /*   By: rmakende <rmakende@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 17:11:42 by rmakende          #+#    #+#             */
-/*   Updated: 2025/06/13 17:13:41 by rmakende         ###   ########.fr       */
+/*   Updated: 2025/07/07 20:12:23 by rmakende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,6 @@
 void	perror_exit(const char *msg)
 {
 	perror(msg);
-	exit(EXIT_FAILURE);
-}
-
-void	usage_exit(void)
-{
-	ft_printf("Usage:\n");
-	ft_printf("./pipex file1 cmd1 cmd2 file2\n");
-	ft_printf("./pipex here_doc LIMITER cmd1 cmd2 file\n");
 	exit(EXIT_FAILURE);
 }
 
