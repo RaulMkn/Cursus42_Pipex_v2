@@ -6,11 +6,46 @@
 /*   By: rmakende <rmakende@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 21:26:56 by rmakende          #+#    #+#             */
-/*   Updated: 2025/07/07 20:12:13 by rmakende         ###   ########.fr       */
+/*   Updated: 2025/07/11 14:27:17 by rmakende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+void	perror_exit(const char *msg)
+{
+	perror(msg);
+	exit(EXIT_FAILURE);
+}
+
+void	handle_heredoc(int argc, char **argv, int *out_fd)
+{
+	char			*line;
+	const char		*limiter = argv[2];
+	const size_t	len = ft_strlen(limiter);
+
+	if (strcmp(argv[1], "here_doc") != 0)
+		return ;
+	*out_fd = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (*out_fd == -1)
+		perror_exit("Error opening output file");
+	while (1)
+	{
+		write(STDOUT_FILENO, "pipe heredoc> ", 14);
+		line = get_next_line(STDIN_FILENO);
+		if (!line)
+			break ;
+		if (ft_strcmp(line, limiter) == 0 || (ft_strlen(line) == len + 1
+				&& line[len] == '\n' && ft_strncmp(line, limiter, len) == 0))
+		{
+			free(line);
+			break ;
+		}
+		write(*out_fd, line, ft_strlen(line));
+		free(line);
+	}
+	close(*out_fd);
+}
 
 void	if_forker(int fd[2], char *argv[], char **envp, int *i)
 {

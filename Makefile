@@ -6,7 +6,7 @@
 #    By: rmakende <rmakende@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/24 21:07:40 by rmakende          #+#    #+#              #
-#    Updated: 2025/06/13 17:12:10 by rmakende         ###   ########.fr        #
+#    Updated: 2025/07/11 14:31:16 by rmakende         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ LIBFT_DIR   = ./Libft
 LIBFT       = $(LIBFT_DIR)/libft.a
 
 # Source files (using bonus files as main)
-SRCS        = pipex_bonus.c pipex_utils_bonus.c pipex_aux.c
+SRCS        = pipex_bonus.c pipex_utils_bonus.c
 
 # Object files
 OBJ_DIR     = obj

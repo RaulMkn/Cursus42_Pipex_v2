@@ -6,7 +6,7 @@
 #    By: rmakende <rmakende@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/04/17 19:11:54 by rmakende          #+#    #+#              #
-#    Updated: 2025/05/22 23:13:49 by rmakende         ###   ########.fr        #
+#    Updated: 2025/07/11 14:25:15 by rmakende         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -60,6 +60,7 @@ SRCS = ft_isalpha.c\
 	   ft_strcpy.c\
 	   ft_strspn.c\
 	   ft_cleaner.c\
+	   ft_strcmp.c\
 	   get_next_line.c\
 	   get_next_line_utils.c\
 	   ft_printf.c\
