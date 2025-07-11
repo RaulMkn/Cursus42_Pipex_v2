@@ -6,7 +6,7 @@
 /*   By: rmakende <rmakende@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/14 21:26:56 by rmakende          #+#    #+#             */
-/*   Updated: 2025/07/11 14:27:17 by rmakende         ###   ########.fr       */
+/*   Updated: 2025/07/11 15:37:40 by rmakende         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,28 +23,31 @@ void	handle_heredoc(int argc, char **argv, int *out_fd)
 	char			*line;
 	const char		*limiter = argv[2];
 	const size_t	len = ft_strlen(limiter);
+	int				pipe_fd[2];
 
-	if (strcmp(argv[1], "here_doc") != 0)
-		return ;
-	*out_fd = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
-	if (*out_fd == -1)
-		perror_exit("Error opening output file");
+	if (pipe(pipe_fd) == -1)
+		perror_exit("pipe failed");
 	while (1)
 	{
 		write(STDOUT_FILENO, "pipe heredoc> ", 14);
 		line = get_next_line(STDIN_FILENO);
 		if (!line)
 			break ;
-		if (ft_strcmp(line, limiter) == 0 || (ft_strlen(line) == len + 1
-				&& line[len] == '\n' && ft_strncmp(line, limiter, len) == 0))
+		if ((ft_strncmp(line, limiter, len) == 0 && line[len] == '\n')
+			|| ft_strncmp(line, limiter, len + 1) == 0)
 		{
 			free(line);
 			break ;
 		}
-		write(*out_fd, line, ft_strlen(line));
+		write(pipe_fd[1], line, ft_strlen(line));
 		free(line);
 	}
-	close(*out_fd);
+	close(pipe_fd[1]);
+	dup2(pipe_fd[0], STDIN_FILENO);
+	close(pipe_fd[0]);
+	*out_fd = open(argv[argc - 1], O_WRONLY | O_CREAT | O_APPEND, 0644);
+	if (*out_fd == -1)
+		perror_exit("Error opening output file");
 }
 
 void	if_forker(int fd[2], char *argv[], char **envp, int *i)
@@ -99,21 +102,36 @@ int	main(int argc, char **argv, char **envp)
 	int		i;
 	int		flag_error;
 
+	flag_error = 0;
+	out_fd = 0;
 	i = main_handler(argc, argv, &out_fd, &flag_error);
 	while (i < argc - 2)
 	{
 		pipe(fd);
 		pid = fork();
 		if (pid == 0)
+		{
+			close(fd[0]);
+			dup2(fd[1], STDOUT_FILENO);
+			close(fd[1]);
 			if_forker(fd, argv, envp, &i);
+		}
 		else
+		{
+			close(fd[1]);
+			dup2(fd[0], STDIN_FILENO);
+			close(fd[0]);
 			else_forker(fd, pid);
+		}
 		i++;
 	}
 	dup2(out_fd, STDOUT_FILENO);
 	close(out_fd);
 	if (flag_error == 1)
+	{
+		close(out_fd);
 		exit(1);
+	}
 	execute_command(argv[argc - 2], envp);
 	while (wait(NULL) > 0)
 		;

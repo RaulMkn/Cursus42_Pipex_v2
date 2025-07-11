@@ -6,14 +6,14 @@
 #    By: rmakende <rmakende@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/24 21:07:40 by rmakende          #+#    #+#              #
-#    Updated: 2025/07/11 14:31:16 by rmakende         ###   ########.fr        #
+#    Updated: 2025/07/11 15:14:41 by rmakende         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 # Compiler settings
 CC          = gcc
 CFLAGS      = -Wall -Wextra -Werror
-DEBUG_FLAGS = -g -fsanitize=address
+DEBUG_FLAGS = -g3
 
 # Directory structure
 LIBFT_DIR   = ./Libft
